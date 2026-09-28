@@ -1,1 +1,70 @@
-*{box-sizing:border-box}body{margin:0;background:#0b0d10;color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:980px;margin:auto;padding:18px 16px 48px}header{display:flex;justify-content:space-between;align-items:center;margin:4px 0 18px}.brand{display:flex;gap:12px;align-items:center}.k{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#ffd400;color:#111;font-weight:900;font-size:30px}.brand h1{margin:0;font-size:25px}.brand p{margin:2px 0 0;color:#999}.badge{border:1px solid #333;background:#17191e;padding:8px 10px;border-radius:999px;color:#ffd400;font-size:12px;font-weight:700}.card{background:#15171c;border:1px solid #292c33;border-radius:20px;padding:18px;margin:14px 0}.drop{text-align:center;border-style:dashed}.drop input{display:none}.drop button,.controls button{border:0;border-radius:13px;padding:12px 18px;background:#282b32;color:white;font-weight:700;font-size:15px}.drop button,.primary{background:#ffd400!important;color:#111!important}.drop p,.drop small{color:#8f949f}.row{display:flex;gap:10px;flex-wrap:wrap}.controls button:disabled{opacity:.35}.time{display:grid;grid-template-columns:48px 1fr 48px;gap:10px;align-items:center;margin:16px 0}.time input{width:100%}.settings{justify-content:space-between;color:#bbb}.display{background:#000;border:1px solid #272727;border-radius:22px;min-height:300px;padding:34px 24px;display:flex;flex-direction:column;justify-content:center;text-align:center}.current{font-size:clamp(30px,6vw,64px);font-weight:900;line-height:1.08;color:#ffd400;text-wrap:balance}.prev,.next{min-height:48px;font-size:clamp(17px,3vw,28px);color:#777;margin:12px 0}.next{color:#c7c7c7}.diag{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.metric{background:#202229;border-radius:12px;padding:12px}.metric b{display:block;font-size:20px;color:#ffd400}.metric span{font-size:12px;color:#999}.status{margin-top:12px;color:#aaa;white-space:pre-wrap}.ok{color:#8ee59a}.err{color:#ff8b8b}h2{font-size:17px;margin:0 0 14px}.headActions{display:flex;gap:8px;align-items:center}.install{border:1px solid #ffd400;background:#ffd400;color:#111;border-radius:999px;padding:8px 12px;font-weight:800}.finalNote{padding:14px 18px;border-radius:16px;background:#111318;border:1px solid #252830;color:#8f949f;text-align:center;font-size:13px}@media(max-width:600px){.badge{display:none}.display{min-height:260px;padding:28px 14px}}
+*{box-sizing:border-box}
+:root{
+  --bg:#09000f;--panel:#12051b;--panel2:#1d0a28;--line:#432050;
+  --magenta:#ff28d7;--purple:#6e14a8;--cyan:#31cfff;--blue:#3188ff;
+  --text:#fff;--muted:#a995b4;
+}
+html,body{margin:0;min-height:100%;background:
+radial-gradient(circle at 12% 12%,rgba(216,28,255,.14),transparent 28%),
+radial-gradient(circle at 88% 8%,rgba(44,173,255,.12),transparent 28%),
+linear-gradient(180deg,#120018 0%,#07000b 100%);color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{padding-bottom:78px}.shell{min-height:100vh}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+padding:0 18px;border-bottom:1px solid #351244;background:rgba(32,4,45,.92);
+position:sticky;top:0;z-index:20;backdrop-filter:blur(16px)}
+.brand-mini{display:flex;align-items:center;gap:9px;font-size:13px}.brand-mini span{color:#b9a9c4}
+.ka-mini{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:1000;
+font-style:italic;color:white;background:linear-gradient(135deg,var(--cyan),#4825ff 45%,var(--magenta));
+box-shadow:0 0 16px rgba(255,40,215,.38)}
+.top-actions{display:flex;gap:7px;align-items:center}.ghost,.install{border:0;border-radius:8px;padding:7px 9px;
+font-size:10px;font-weight:900;letter-spacing:.4px}.ghost{background:transparent;color:#70ddff}
+.install{background:linear-gradient(90deg,var(--magenta),var(--cyan));color:#08010b}
+.workspace{max-width:1100px;margin:0 auto;padding:16px}.hero-panel{background:rgba(10,0,14,.76);
+border:1px solid #3b1549;border-radius:22px;padding:18px;box-shadow:0 22px 60px rgba(0,0,0,.35)}
+.logo-stage{min-height:130px;border-radius:16px;background:linear-gradient(180deg,#050007,#0d0112);
+display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #25102d;
+box-shadow:inset 0 0 50px rgba(255,31,216,.04)}
+.ka-logo{font-size:56px;font-weight:1000;line-height:.9;font-style:italic;letter-spacing:-7px;
+background:linear-gradient(180deg,#7ff3ff 8%,#1f71ff 43%,#ff37df 78%,#ffc9ff);
+-webkit-background-clip:text;background-clip:text;color:transparent;
+text-shadow:0 0 22px rgba(48,198,255,.16)}
+.karandy-word{font-size:27px;font-weight:1000;margin-top:5px;letter-spacing:.3px}
+.studio-word{font-size:8px;font-weight:900;letter-spacing:4px;color:#51cfff;margin-top:4px}
+.card{background:linear-gradient(180deg,rgba(32,9,43,.94),rgba(20,5,29,.94));
+border:1px solid #4b1b58;border-radius:16px}
+.load-zone{text-align:center;margin-top:12px;padding:13px}.load-zone input{display:none}
+.primary,.player button{border:0;border-radius:11px;font-weight:900;color:white;background:#291235}
+.primary{background:linear-gradient(90deg,#c719ff,#fa2aca)!important}.big{padding:11px 20px}
+.load-copy{font-size:11px;color:#8f7a9a;margin-top:7px}.load-zone small{display:block;margin-top:5px;color:#d1badc}
+.karaoke-display{min-height:235px;background:#000;border:1px solid #28102f;border-radius:18px;margin:12px 0;
+padding:22px;display:flex;flex-direction:column;justify-content:center;text-align:center;overflow:hidden}
+.lyric{min-height:42px}.current{font-size:clamp(28px,5.5vw,58px);font-weight:1000;line-height:1.05;
+background:linear-gradient(90deg,#ff27d3,#f6f0ff 48%,#31cfff);
+-webkit-background-clip:text;background-clip:text;color:transparent}
+.prev,.next{font-size:clamp(15px,2.5vw,23px);color:#76657f;margin:8px 0}.next{color:#c0adc8}
+.player{padding:14px}.transport{display:flex;align-items:center;gap:8px}.transport button{width:42px;height:39px;font-size:18px}
+.transport button:disabled{opacity:.35}.timebox{margin-left:auto;color:#a996b4;font-variant-numeric:tabular-nums}
+.slash{opacity:.35;margin:0 4px}.seek-wrap{position:relative;margin:14px 0 9px;padding-top:5px}
+.seek-wrap input{width:100%;position:relative;z-index:3}.seek-accent{position:absolute;top:0;height:4px;border-radius:5px;width:49%}
+.seek-accent.magenta{left:0;background:linear-gradient(90deg,#ff27d3,#ef36ff)}
+.seek-accent.cyan{right:0;background:linear-gradient(90deg,#35a4ff,#45dfff)}
+.control-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:9px}.control-box{padding:10px 11px;
+background:#110817;border:1px solid #351540;border-radius:11px;color:#a894b2;font-size:10px;font-weight:900;letter-spacing:.5px}
+.control-box input{width:100%;margin-top:7px}.metric-big strong{display:block;color:white;font-size:17px;margin-top:5px}
+.engine{margin-top:12px;padding:14px}.engine-head{display:flex;align-items:center;gap:8px}.engine-head h2{font-size:15px;margin:0}
+.engine-dot{width:8px;height:8px;border-radius:50%;background:#2cff95;box-shadow:0 0 12px #2cff95}
+.diag{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin-top:12px}
+.metric{background:#100716;border:1px solid #30133a;border-radius:10px;padding:9px}.metric b{display:block;color:#5ddcff;font-size:15px}
+.metric span{color:#8f7d99;font-size:10px}.status{margin-top:10px;color:#b3a1bc;font-size:12px}.ok{color:#5cff9f}.err{color:#ff7b9d}
+.dock{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);width:min(760px,calc(100% - 24px));
+display:grid;grid-template-columns:repeat(7,1fr);background:rgba(23,3,31,.96);border:1px solid #4b1759;
+border-radius:16px;padding:7px;box-shadow:0 18px 50px rgba(0,0,0,.45);z-index:30;backdrop-filter:blur(18px)}
+.dock button{border:0;background:transparent;color:#bca9c6;padding:9px 4px;font-size:10px;font-weight:900}
+.dock button.active{color:#ff3ad9}.dock button.cyan{color:#4ad7ff}
+@media(max-width:720px){
+.topbar{padding:0 10px}.top-actions .ghost:nth-child(1),.top-actions .ghost:nth-child(2){display:none}
+.workspace{padding:10px}.hero-panel{padding:10px}.logo-stage{min-height:115px}
+.control-grid{grid-template-columns:1fr 1fr}.dock{grid-template-columns:repeat(7,1fr);bottom:7px}
+.dock button{font-size:8px;padding:8px 1px}.karaoke-display{min-height:210px;padding:14px}
+}

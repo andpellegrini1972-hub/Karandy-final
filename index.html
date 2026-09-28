@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0d10">
+<meta name="theme-color" content="#170020">
 <title>KarAndy Final</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -11,34 +11,103 @@
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<main class="app">
-<header>
-  <div class="brand"><span class="k">K</span><div><h1>KarAndy</h1><p>FINAL · Universal Test Build</p></div></div>
-  <div class="headActions"><span class="badge">GM · GS · MIDI/KAR</span><button id="install" class="install" hidden>Installa</button></div>
-</header>
-<section class="card drop" id="drop">
-<input id="file" type="file" accept=".mid,.midi,.kar,audio/midi,audio/x-midi">
-<button id="pick">Apri MIDI / KAR</button>
-<p>oppure trascina qui il file</p>
-<small id="fileName">Nessun file caricato</small>
-</section>
-<section class="card controls">
-<div class="row">
-<button id="play" class="primary" disabled>▶ Play</button>
-<button id="pause" disabled>Ⅱ Pausa</button>
-<button id="stop" disabled>■ Stop</button>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand-mini">
+      <div class="ka-mini">KA</div>
+      <div>
+        <strong>KarAndy</strong>
+        <span>· Karaoke Studio</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="ghost">LOCALE</button>
+      <button class="ghost">QR PUBBLICO</button>
+      <button class="ghost">MANUALE</button>
+      <button id="install" class="install" hidden>INSTALLA</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="hero-panel">
+      <div class="logo-stage">
+        <div class="ka-logo">KA</div>
+        <div class="karandy-word">KarAndy</div>
+        <div class="studio-word">KARAOKE STUDIO</div>
+      </div>
+
+      <div class="load-zone card" id="drop">
+        <input id="file" type="file" accept=".mid,.midi,.kar,audio/midi,audio/x-midi">
+        <button id="pick" class="primary big">APRI MIDI / KAR</button>
+        <div class="load-copy">oppure trascina qui il file</div>
+        <small id="fileName">Nessun file caricato</small>
+      </div>
+
+      <section class="karaoke-display">
+        <div id="prev" class="lyric prev"></div>
+        <div id="current" class="lyric current">Carica un MIDI/KAR</div>
+        <div id="next" class="lyric next"></div>
+      </section>
+
+      <section class="player card">
+        <div class="transport">
+          <button id="play" class="primary" disabled>▶</button>
+          <button id="pause" disabled>Ⅱ</button>
+          <button id="stop" disabled>■</button>
+          <div class="timebox"><span id="cur">0:00</span><span class="slash">/</span><span id="dur">0:00</span></div>
+        </div>
+
+        <div class="seek-wrap">
+          <div class="seek-accent magenta"></div>
+          <div class="seek-accent cyan"></div>
+          <input id="seek" type="range" min="0" max="1000" value="0" disabled>
+        </div>
+
+        <div class="control-grid">
+          <label class="control-box">
+            <span>VOLUME</span>
+            <input id="volume" type="range" min="0" max="1.4" step=".01" value=".92">
+          </label>
+          <div class="control-box metric-big">
+            <span>TEMPO</span>
+            <strong>100%</strong>
+          </div>
+          <div class="control-box metric-big">
+            <span>TONALITÀ</span>
+            <strong>0</strong>
+          </div>
+          <div class="control-box metric-big">
+            <span>MOTORE</span>
+            <strong>GM / GS</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="engine card">
+        <div class="engine-head">
+          <h2>KarAndy MIDI Engine</h2>
+          <div class="engine-dot"></div>
+        </div>
+        <div id="diag" class="diag">
+          <div class="metric"><b>FluidSynth</b><span>Engine</span></div>
+          <div class="metric"><b>GeneralUser GS</b><span>SoundFont</span></div>
+        </div>
+        <div id="status" class="status">Inizializzazione motore…</div>
+      </section>
+    </section>
+  </main>
+
+  <nav class="dock">
+    <button>Brani</button>
+    <button>Scaletta</button>
+    <button>Testo</button>
+    <button class="active">Editor</button>
+    <button>Diagramma</button>
+    <button class="cyan">Display</button>
+    <button>Salva</button>
+  </nav>
 </div>
-<div class="time"><span id="cur">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" disabled><span id="dur">0:00</span></div>
-<div class="row settings"><label>Volume <input id="volume" type="range" min="0" max="1.4" step=".01" value=".92"></label></div>
-</section>
-<section class="display"><div id="prev" class="prev"></div><div id="current" class="current">Carica un MIDI/KAR</div><div id="next" class="next"></div></section>
-<section class="card">
-<h2>KarAndy MIDI Engine</h2>
-<div id="diag" class="diag"><div class="metric"><b>FluidSynth</b><span>Engine</span></div><div class="metric"><b>GeneralUser GS</b><span>SoundFont</span></div></div>
-<div id="status" class="status">Inizializzazione motore…</div>
-</section>
-<section class="finalNote">Questa è la versione unica da usare per i test. Le build precedenti sono archiviate.</section>
-</main>
+
 <script src="https://cdn.jsdelivr.net/npm/js-synthesizer@1.13.0/externals/libfluidsynth-2.4.6.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-synthesizer@1.13.0/dist/js-synthesizer.min.js"></script>
 <script src="/app.js"></script>

@@ -1,1 +1,10 @@
-{"name":"KarAndy Final","short_name":"KarAndy","description":"KarAndy Universal MIDI/KAR Player","start_url":"/","display":"standalone","background_color":"#0b0d10","theme_color":"#0b0d10","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "name":"KarAndy Final",
+  "short_name":"KarAndy",
+  "description":"KarAndy Universal MIDI/KAR Player",
+  "start_url":"/",
+  "display":"standalone",
+  "background_color":"#09000f",
+  "theme_color":"#170020",
+  "icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
