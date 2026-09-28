@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>KarAndy Final</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="app">
+<header>
+  <div class="brand"><span class="k">K</span><div><h1>KarAndy</h1><p>FINAL · Universal Test Build</p></div></div>
+  <div class="headActions"><span class="badge">GM · GS · MIDI/KAR</span><button id="install" class="install" hidden>Installa</button></div>
+</header>
+<section class="card drop" id="drop">
+<input id="file" type="file" accept=".mid,.midi,.kar,audio/midi,audio/x-midi">
+<button id="pick">Apri MIDI / KAR</button>
+<p>oppure trascina qui il file</p>
+<small id="fileName">Nessun file caricato</small>
+</section>
+<section class="card controls">
+<div class="row">
+<button id="play" class="primary" disabled>▶ Play</button>
+<button id="pause" disabled>Ⅱ Pausa</button>
+<button id="stop" disabled>■ Stop</button>
+</div>
+<div class="time"><span id="cur">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" disabled><span id="dur">0:00</span></div>
+<div class="row settings"><label>Volume <input id="volume" type="range" min="0" max="1.4" step=".01" value=".92"></label></div>
+</section>
+<section class="display"><div id="prev" class="prev"></div><div id="current" class="current">Carica un MIDI/KAR</div><div id="next" class="next"></div></section>
+<section class="card">
+<h2>KarAndy MIDI Engine</h2>
+<div id="diag" class="diag"><div class="metric"><b>FluidSynth</b><span>Engine</span></div><div class="metric"><b>GeneralUser GS</b><span>SoundFont</span></div></div>
+<div id="status" class="status">Inizializzazione motore…</div>
+</section>
+<section class="finalNote">Questa è la versione unica da usare per i test. Le build precedenti sono archiviate.</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/js-synthesizer@1.13.0/externals/libfluidsynth-2.4.6.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-synthesizer@1.13.0/dist/js-synthesizer.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
