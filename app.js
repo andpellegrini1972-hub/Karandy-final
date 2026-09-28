@@ -53,9 +53,107 @@ async function createSynth(){
  audioNode.connect(dryGain).connect(masterGain);audioNode.connect(convolver).connect(wetGain).connect(masterGain);audioNode.connect(chorusDelay).connect(chorusGain).connect(masterGain);masterGain.connect(compressor).connect(audioCtx.destination);
  await synth.loadSFont(sf2Buffer.slice(0));await synth.addSMFDataToPlayer(midiBuffer.slice(0));try{synth.setGain(.5)}catch(e){}
 }
-async function play(){if(!engineReady||!midiBuffer||playing)return;try{if(!synth){ui.status.textContent="Avvio FluidSynth…";await createSynth()}if(pausedSec>0){try{await synth.seekPlayer(Math.floor(pausedSec*1000))}catch(e){}}await synth.playPlayer();playing=true;startPerf=performance.now();buttons();paint();ui.status.innerHTML='<span class="ok">FluidSynth in riproduzione.</span>'}catch(e){playing=false;buttons();ui.status.innerHTML='<span class="err">Errore Play: '+e.message+'</span>'}}
-async function pause(){if(!playing)return;pausedSec=nowSec();playing=false;cancelAnimationFrame(raf);try{await synth.stopPlayer()}catch(e){}try{synth.close()}catch(e){}synth=null;buttons();ui.status.textContent="In pausa."}
-async function stop(){playing=false;pausedSec=0;cancelAnimationFrame(raf);try{if(synth)await synth.stopPlayer()}catch(e){}try{if(synth)synth.close()}catch(e){}synth=null;if(chorusOsc){try{chorusOsc.stop()}catch(e){}chorusOsc=null}if(audioNode){try{audioNode.disconnect()}catch(e){}audioNode=null}if(audioCtx){try{await audioCtx.close()}catch(e){}audioCtx=null}ui.cur.textContent="0:00";ui.seek.value=0;lyricAt(0);buttons();ui.status.textContent="Stop."}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function fadeMaster(value,seconds=.025){
+ if(!masterGain||!audioCtx)return;
+ const t=audioCtx.currentTime;
+ try{
+  masterGain.gain.cancelScheduledValues(t);
+  masterGain.gain.setValueAtTime(masterGain.gain.value,t);
+  masterGain.gain.linearRampToValueAtTime(value,t+seconds);
+ }catch(e){masterGain.gain.value=value}
+}
+async function play(){
+ if(!engineReady||!midiBuffer||playing)return;
+ try{
+  if(!synth){ui.status.textContent="Avvio FluidSynth…";await createSynth()}
+  if(audioCtx&&audioCtx.state==="suspended")await audioCtx.resume();
+
+  // IMPORTANTE: dopo Pausa NON facciamo seek.
+  // FluidSynth player_stop() conserva la posizione e playPlayer() riprende da lì.
+  await synth.playPlayer();
+
+  fadeMaster(Math.max(0,Math.min(1.4,+ui.vol.value)),.035);
+  playing=true;
+  startPerf=performance.now();
+  buttons();paint();
+  ui.status.innerHTML='<span class="ok">FluidSynth in riproduzione.</span>';
+ }catch(e){
+  playing=false;buttons();
+  ui.status.innerHTML='<span class="err">Errore Play: '+e.message+'</span>';
+ }
+}
+async function pause(){
+ if(!playing||!synth)return;
+ pausedSec=nowSec();
+ playing=false;
+ cancelAnimationFrame(raf);
+
+ try{
+  // taglio morbido per evitare note appese/colpi digitali
+  fadeMaster(0,.02);
+  await sleep(30);
+
+  // FluidSynth: stop = PAUSA, non rewind.
+  await synth.stopPlayer();
+  if(typeof synth.waitForPlayerStopped==="function"){
+   try{await synth.waitForPlayerStopped()}catch(e){}
+  }
+
+  // Congela anche le voci già attive: al Resume riprendono senza corrompersi.
+  if(audioCtx&&audioCtx.state==="running"){
+   try{await audioCtx.suspend()}catch(e){}
+  }
+ }catch(e){
+  console.warn("Pause MIDI:",e);
+ }
+ buttons();
+ ui.status.textContent="In pausa.";
+}
+async function stop(){
+ playing=false;
+ pausedSec=0;
+ cancelAnimationFrame(raf);
+
+ try{
+  // Se eravamo in pausa, riapriamo per poter chiudere ordinatamente il grafo.
+  if(audioCtx&&audioCtx.state==="suspended"){
+   try{await audioCtx.resume()}catch(e){}
+  }
+
+  fadeMaster(0,.015);
+  await sleep(25);
+
+  if(synth){
+   try{await synth.stopPlayer()}catch(e){}
+   if(typeof synth.waitForPlayerStopped==="function"){
+    try{await synth.waitForPlayerStopped()}catch(e){}
+   }
+  }
+
+  // Ferma prima il rendering WebAudio, poi libera FluidSynth.
+  if(chorusOsc){try{chorusOsc.stop()}catch(e){}chorusOsc=null}
+  if(audioNode){try{audioNode.disconnect()}catch(e){}audioNode=null}
+  if(audioCtx){
+   try{await audioCtx.close()}catch(e){}
+   audioCtx=null;
+  }
+  if(synth){
+   try{synth.close()}catch(e){}
+   synth=null;
+  }
+ }catch(e){
+  console.warn("Stop MIDI:",e);
+  synth=null;audioCtx=null;audioNode=null;chorusOsc=null;
+ }
+
+ masterGain=null;compressor=null;dryGain=null;wetGain=null;convolver=null;chorusDelay=null;
+ ui.cur.textContent="0:00";
+ ui.seek.value=0;
+ lyricAt(0);
+ buttons();
+ ui.status.textContent="Stop.";
+}
 function buttons(){const ok=engineReady&&!!midiBuffer;ui.play.disabled=!ok||playing;ui.pause.disabled=!ok||!playing;ui.stop.disabled=!midiBuffer;ui.seek.disabled=!ok}
 async function load(file){try{await stop();ui.status.textContent="Analisi MIDI…";midiBuffer=await file.arrayBuffer();const p=parseLyrics(midiBuffer);lyrics=p.lyrics;duration=p.duration;ui.name.textContent=file.name;ui.dur.textContent=fmt(duration);ui.diag.innerHTML=[["FluidSynth","Engine"],["GeneralUser GS","SoundFont"],["Format "+p.format,p.tracks+" tracce"],[p.channels.length,"Canali"],[p.programCount,"Programmi"],[p.controllers,"Controller"],[p.pitchBends,"Pitch Bend"],[p.sysex,"SysEx"],[lyrics.length,"Lyrics"],[p.tempoCount,"Cambi tempo"]].map(x=>'<div class="metric"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join("");pausedSec=0;lyricAt(0);buttons();ui.status.innerHTML='<span class="ok">MIDI analizzato e pronto. Premi Play.</span>'}catch(e){midiBuffer=null;buttons();ui.status.innerHTML='<span class="err">'+e.message+'</span>'}}
 ui.pick.onclick=()=>ui.file.click();ui.file.onchange=e=>e.target.files[0]&&load(e.target.files[0]);ui.play.onclick=play;ui.pause.onclick=pause;ui.stop.onclick=stop;ui.vol.oninput=()=>{if(masterGain)masterGain.gain.value=Math.max(0,Math.min(1.4,+ui.vol.value))};ui.seek.oninput=()=>{if(!midiBuffer)return;if(playing)pause();pausedSec=(+ui.seek.value/1000)*duration;ui.cur.textContent=fmt(pausedSec);lyricAt(pausedSec)};["dragenter","dragover"].forEach(ev=>ui.drop.addEventListener(ev,e=>e.preventDefault()));ui.drop.addEventListener("drop",e=>{e.preventDefault();e.dataTransfer.files[0]&&load(e.dataTransfer.files[0])});
