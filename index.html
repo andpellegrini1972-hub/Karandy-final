@@ -12,104 +12,170 @@
 </head>
 <body>
 <div class="shell">
-  <header class="topbar">
-    <div class="brand-mini">
-      <div class="ka-mini">KA</div>
-      <div>
-        <strong>KarAndy</strong>
-        <span>· Karaoke Studio</span>
-      </div>
+<header class="topbar">
+  <div class="brand-mini"><div class="ka-mini">KA</div><div><strong>KarAndy</strong><span> · Karaoke Studio</span></div></div>
+  <div class="top-actions">
+    <button id="eventModeBtn" class="ghost">EVENTO</button>
+    <button id="qrTopBtn" class="ghost">QR PUBBLICO</button>
+    <button id="manualBtn" class="ghost">MANUALE</button>
+    <button id="install" class="install" hidden>INSTALLA</button>
+  </div>
+</header>
+
+<main class="workspace">
+<section class="hero-panel">
+  <div class="logo-stage" id="logoOpen">
+    <div class="ka-logo">KA</div>
+    <div class="karandy-word">KarAndy</div>
+    <div class="studio-word">KARAOKE STUDIO</div>
+  </div>
+
+  <div class="load-zone card" id="drop">
+    <input id="file" type="file" accept=".mid,.midi,.kar,.mp3,.wav,.m4a,.aac,.mp4,.mov,.m4v,.webm,audio/*,video/*">
+    <button id="pick" class="primary big">APRI BRANO</button>
+    <div class="load-copy">MIDI / KAR / Audio / Video · oppure trascina qui</div>
+    <small id="fileName">Nessun file caricato</small>
+  </div>
+
+  <video id="videoView" class="video-view" playsinline hidden></video>
+
+  <section class="karaoke-display">
+    <div id="singerBanner" class="singer-banner"></div>
+    <div id="prev" class="lyric prev"></div>
+    <div id="current" class="lyric current">Carica un brano</div>
+    <div id="next" class="lyric next"></div>
+  </section>
+
+  <section class="player card">
+    <div class="transport">
+      <button id="play" class="primary" disabled>▶</button>
+      <button id="pause" disabled>Ⅱ</button>
+      <button id="stop" disabled>■</button>
+      <div class="timebox"><span id="cur">0:00</span><span class="slash">/</span><span id="dur">0:00</span></div>
     </div>
-    <div class="top-actions">
-      <button class="ghost">LOCALE</button>
-      <button class="ghost">QR PUBBLICO</button>
-      <button class="ghost">MANUALE</button>
-      <button id="install" class="install" hidden>INSTALLA</button>
+    <div class="seek-wrap">
+      <div class="seek-accent magenta"></div><div class="seek-accent cyan"></div>
+      <input id="seek" type="range" min="0" max="1000" value="0" disabled>
     </div>
-  </header>
+    <div class="control-grid">
+      <label class="control-box"><span>VOLUME</span><input id="volume" type="range" min="0" max="1.4" step=".01" value=".92"><b id="volValue">92%</b></label>
+      <label class="control-box"><span>TEMPO</span><input id="tempo" type="range" min="70" max="120" step="1" value="100"><b id="tempoValue">100%</b></label>
+      <div class="control-box tone-box"><span>TONALITÀ</span><div class="tone-row"><button id="toneDown">−</button><b id="toneValue">0</b><button id="toneUp">+</button></div></div>
+      <div class="control-box metric-big"><span>MOTORE</span><strong id="engineLabel">GM / GS</strong></div>
+    </div>
+  </section>
 
-  <main class="workspace">
-    <section class="hero-panel">
-      <div class="logo-stage">
-        <div class="ka-logo">KA</div>
-        <div class="karandy-word">KarAndy</div>
-        <div class="studio-word">KARAOKE STUDIO</div>
-      </div>
+  <section class="engine card">
+    <div class="engine-head"><h2>KarAndy MIDI Engine</h2><div id="engineDot" class="engine-dot"></div></div>
+    <div id="diag" class="diag"><div class="metric"><b>FluidSynth</b><span>Engine</span></div><div class="metric"><b>GeneralUser GS</b><span>SoundFont</span></div></div>
+    <div id="status" class="status">Inizializzazione motore…</div>
+  </section>
+</section>
+</main>
 
-      <div class="load-zone card" id="drop">
-        <input id="file" type="file" accept=".mid,.midi,.kar,audio/midi,audio/x-midi">
-        <button id="pick" class="primary big">APRI MIDI / KAR</button>
-        <div class="load-copy">oppure trascina qui il file</div>
-        <small id="fileName">Nessun file caricato</small>
-      </div>
-
-      <section class="karaoke-display">
-        <div id="prev" class="lyric prev"></div>
-        <div id="current" class="lyric current">Carica un MIDI/KAR</div>
-        <div id="next" class="lyric next"></div>
-      </section>
-
-      <section class="player card">
-        <div class="transport">
-          <button id="play" class="primary" disabled>▶</button>
-          <button id="pause" disabled>Ⅱ</button>
-          <button id="stop" disabled>■</button>
-          <div class="timebox"><span id="cur">0:00</span><span class="slash">/</span><span id="dur">0:00</span></div>
-        </div>
-
-        <div class="seek-wrap">
-          <div class="seek-accent magenta"></div>
-          <div class="seek-accent cyan"></div>
-          <input id="seek" type="range" min="0" max="1000" value="0" disabled>
-        </div>
-
-        <div class="control-grid">
-          <label class="control-box">
-            <span>VOLUME</span>
-            <input id="volume" type="range" min="0" max="1.4" step=".01" value=".92">
-          </label>
-          <div class="control-box metric-big">
-            <span>TEMPO</span>
-            <strong>100%</strong>
-          </div>
-          <div class="control-box metric-big">
-            <span>TONALITÀ</span>
-            <strong>0</strong>
-          </div>
-          <div class="control-box metric-big">
-            <span>MOTORE</span>
-            <strong>GM / GS</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="engine card">
-        <div class="engine-head">
-          <h2>KarAndy MIDI Engine</h2>
-          <div class="engine-dot"></div>
-        </div>
-        <div id="diag" class="diag">
-          <div class="metric"><b>FluidSynth</b><span>Engine</span></div>
-          <div class="metric"><b>GeneralUser GS</b><span>SoundFont</span></div>
-        </div>
-        <div id="status" class="status">Inizializzazione motore…</div>
-      </section>
-    </section>
-  </main>
-
-  <nav class="dock">
-    <button>Brani</button>
-    <button>Scaletta</button>
-    <button>Testo</button>
-    <button class="active">Editor</button>
-    <button>Diagramma</button>
-    <button class="cyan">Display</button>
-    <button>Salva</button>
-  </nav>
+<nav class="dock">
+  <button data-panel="songsPanel">Brani</button>
+  <button data-panel="queuePanel">Scaletta <span id="queueBadge" class="badge-mini">0</span></button>
+  <button data-panel="lyricsPanel">Testo</button>
+  <button data-panel="editorPanel" class="active">Editor</button>
+  <button data-panel="diagramPanel">Diagramma</button>
+  <button id="displayBtn" class="cyan">Display</button>
+  <button id="saveBtn">Salva</button>
+</nav>
 </div>
 
+<!-- BRANI -->
+<aside id="songsPanel" class="panel">
+  <div class="panel-head"><h3>Brani</h3><button class="close">×</button></div>
+  <div class="panel-actions">
+    <button id="addSongsBtn" class="primary">Aggiungi file</button>
+    <input id="songsInput" type="file" multiple accept=".mid,.midi,.kar,.mp3,.wav,.m4a,.aac,.mp4,.mov,.m4v,.webm,audio/*,video/*" hidden>
+    <button id="openFolderBtn">Apri cartella</button>
+    <input id="folderInput" type="file" webkitdirectory multiple hidden>
+  </div>
+  <input id="songSearch" class="field" placeholder="Cerca titolo o file…">
+  <div id="songList" class="list empty">Nessun brano aggiunto</div>
+</aside>
+
+<!-- SCALETTA -->
+<aside id="queuePanel" class="panel">
+  <div class="panel-head"><h3>Scaletta</h3><button class="close">×</button></div>
+  <div class="grid2">
+    <input id="singerName" class="field" placeholder="Cantante / soprannome">
+    <select id="performanceType" class="field"><option>Solista</option><option>Duetto</option></select>
+  </div>
+  <textarea id="dedication" class="field" rows="2" placeholder="Dedica facoltativa"></textarea>
+  <button id="addCurrentQueue" class="primary full">Aggiungi il brano corrente</button>
+  <div class="queue-toolbar">
+    <button id="clearQueue">Svuota</button><button id="saveQueue">Salva scaletta</button>
+  </div>
+  <div id="queueList" class="list empty">Scaletta vuota</div>
+</aside>
+
+<!-- TESTO -->
+<aside id="lyricsPanel" class="panel">
+  <div class="panel-head"><h3>Testo / LRC</h3><button class="close">×</button></div>
+  <button id="loadLrcBtn" class="primary">Carica file LRC</button>
+  <input id="lrcInput" type="file" accept=".lrc,.txt,text/plain" hidden>
+  <textarea id="lyricsPreview" class="field mono" rows="16" placeholder="Il testo sincronizzato apparirà qui…"></textarea>
+  <button id="clearLyrics">Rimuovi testo esterno</button>
+</aside>
+
+<!-- EDITOR -->
+<aside id="editorPanel" class="panel wide">
+  <div class="panel-head"><h3>Editor sincronizzazione</h3><button class="close">×</button></div>
+  <div class="editor-grid">
+    <div>
+      <label>Incolla il testo, una frase per riga</label>
+      <textarea id="editorText" class="field mono" rows="16" placeholder="Prima frase&#10;Seconda frase&#10;Terza frase"></textarea>
+    </div>
+    <div class="sync-box">
+      <div class="sync-counter">Riga <b id="syncIndex">0</b> / <span id="syncTotal">0</span></div>
+      <div id="syncCurrentLine" class="sync-current">Inserisci il testo</div>
+      <button id="startSync" class="primary full">Inizia sincronizzazione</button>
+      <button id="markLine" class="primary full" disabled>SINCRONIZZA QUESTA RIGA</button>
+      <button id="backLine" class="full">← Indietro di una riga</button>
+      <button id="exportLrc" class="full">Scarica LRC</button>
+    </div>
+  </div>
+</aside>
+
+<!-- DIAGRAMMA -->
+<aside id="diagramPanel" class="panel">
+  <div class="panel-head"><h3>Diagramma MIDI</h3><button class="close">×</button></div>
+  <div id="midiDiagram" class="diagram">Carica un MIDI/KAR per vedere il riepilogo.</div>
+</aside>
+
+<!-- QR -->
+<aside id="qrPanel" class="panel">
+  <div class="panel-head"><h3>QR Pubblico</h3><button class="close">×</button></div>
+  <p class="muted">Genera il codice della serata. Le richieste cloud saranno attivate nella build collegata al database.</p>
+  <div class="grid2">
+    <input id="venueName" class="field" placeholder="Nome locale / evento">
+    <select id="eventType" class="field"><option>Locale</option><option>Matrimonio</option><option>Festa privata</option><option>Gara canora</option><option>Scuola di canto</option></select>
+  </div>
+  <button id="generateQr" class="primary full">Genera sessione</button>
+  <div id="qrBox" class="qr-box"></div>
+  <div id="requestList" class="list empty">Nessuna richiesta ricevuta</div>
+</aside>
+
+<!-- MODALITA EVENTO -->
+<aside id="eventPanel" class="panel">
+  <div class="panel-head"><h3>Modalità evento</h3><button class="close">×</button></div>
+  <div class="event-grid">
+    <button data-event="Locale">Locale</button><button data-event="Matrimonio">Matrimonio</button>
+    <button data-event="Festa privata">Festa privata</button><button data-event="Gara canora">Gara canora</button>
+    <button data-event="Scuola di canto">Scuola di canto</button>
+  </div>
+  <div class="status">Modalità corrente: <b id="currentEventMode">Locale</b></div>
+</aside>
+
+<div id="toast" class="toast"></div>
+
+<audio id="audioElement" playsinline hidden></audio>
 <script src="https://cdn.jsdelivr.net/npm/js-synthesizer@1.13.0/externals/libfluidsynth-2.4.6.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-synthesizer@1.13.0/dist/js-synthesizer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <script src="/app.js"></script>
 </body>
 </html>

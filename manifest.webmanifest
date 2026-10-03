@@ -1,7 +1,7 @@
 {
   "name":"KarAndy Final",
   "short_name":"KarAndy",
-  "description":"KarAndy Universal MIDI/KAR Player",
+  "description":"KarAndy Karaoke Studio",
   "start_url":"/",
   "display":"standalone",
   "background_color":"#09000f",
